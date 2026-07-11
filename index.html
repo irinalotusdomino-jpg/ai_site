@@ -75,23 +75,6 @@
 
     <div class="rl-visual">
 
-      <!-- WOW: парящa AI-сфера (замінює телефон) -->
-      <div class="rl-orb-wrap rl-reveal" id="rlOrb">
-        <div class="rl-orb-breathe">
-          <div class="rl-orb-glow" aria-hidden="true"></div>
-          <div class="rl-orb-wave" id="rlOrbWave" aria-hidden="true"></div>
-          <div class="rl-orb" id="rlOrbCore">
-            <canvas class="rl-orb-canvas" id="rlOrbCanvas"></canvas>
-            <svg class="rl-orb-lines" id="rlOrbLines" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="34" />
-              <circle cx="50" cy="50" r="24" />
-              <path d="M50 6 L50 94" />
-              <path d="M6 50 L94 50" />
-            </svg>
-          </div>
-        </div>
-      </div>
-
       <!-- 4 "вікна" з контентом: 2 фото + 2 відео -->
       <div class="rl-windows" id="rlWindows"></div>
     </div>
@@ -212,36 +195,22 @@
       }
     ],
 
-    /* --- WOW-ефект №3: парюча AI-сфера (замінює мокап телефону) --- */
-    orb: {
-      bg: "#050816",       /* ЗМІНИТИ — базовий колір ядра сфери */
-      colorA: "#7C3AED",   /* ЗМІНИТИ — фіолетове світіння */
-      colorB: "#22D3EE",   /* ЗМІНИТИ — бірюзове світіння */
-      size: 168,           /* ЗМІНИТИ — розмір сфери на десктопі, px (120–180) */
-      sizeTablet: 140,     /* ЗМІНИТИ — розмір на планшеті, px */
-      sizeMobile: 116,     /* ЗМІНИТИ — розмір на телефоні, px */
-      blur: 54,            /* ЗМІНИТИ — розмиття зовнішнього світіння, px (40–60) */
-      particles: 16        /* ЗМІНИТИ — кількість часток усередині сфери */
-    },
-
     /* --- WOW-ефекти --- */
     effects: {
       bootSequence: true, /* ЗМІНИТИ на false, щоб вимкнути екран запуску AI */
-      neuralCursor: true, /* ЗМІНИТИ на false, щоб вимкнути живе нейронне поле під курсором */
-      orb: true            /* ЗМІНИТИ на false, щоб вимкнути AI-сферу */
+      neuralCursor: true  /* ЗМІНИТИ на false, щоб вимкнути живе нейронне поле під курсором/пальцем */
     },
 
     /* --- Налаштування екрана запуску AI (WOW-ефект №1) --- */
     boot: {
       lines: [
-        { text: "Initializing AI...", mode: "type" }, /* ЗМІНИТИ */
         { text: "Сканування відвідувача...", mode: "scan" }, /* ЗМІНИТИ */
         { text: "Профіль розпізнано — AI Reels Creator ✓", mode: "type" } /* ЗМІНИТИ */
       ],
-      typeSpeedMs: 34, /* ЗМІНИТИ швидкість друку (мс на символ) */
-      holdMs: 380,     /* ЗМІНИТИ паузу після кожного рядка */
-      scanMs: 900,     /* ЗМІНИТИ тривалість сканування/лічильника % */
-      initialDelayMs: 550 /* ЗМІНИТИ паузу з самотнім блимаючим курсором на старті */
+      typeSpeedMs: 26, /* ЗМІНИТИ швидкість друку (мс на символ) */
+      holdMs: 260,     /* ЗМІНИТИ паузу після кожного рядка */
+      scanMs: 650,     /* ЗМІНИТИ тривалість сканування/лічильника % */
+      initialDelayMs: 320 /* ЗМІНИТИ паузу з самотнім блимаючим курсором на старті */
     },
 
     /* --- Налаштування нейронного поля курсора (WOW-ефект №2) --- */
@@ -281,14 +250,7 @@
     +   "--rl-btn-outline-text:" + CONFIG.colors.btnOutlineText + ";"
     +   "--rl-font-heading:'" + CONFIG.fontHeading + "', serif;"
     +   "--rl-font-body:'" + CONFIG.fontBody + "', sans-serif;"
-    +   "--rl-orb-bg:" + CONFIG.orb.bg + ";"
-    +   "--rl-orb-a:" + CONFIG.orb.colorA + ";"
-    +   "--rl-orb-b:" + CONFIG.orb.colorB + ";"
-    +   "--rl-orb-blur:" + CONFIG.orb.blur + "px;"
-    +   "--rl-orb-d:" + CONFIG.orb.size + "px;"
     + "}"
-    + "@media(max-width:900px){#rlHero{--rl-orb-d:" + CONFIG.orb.sizeTablet + "px;}}"
-    + "@media(max-width:480px){#rlHero{--rl-orb-d:" + CONFIG.orb.sizeMobile + "px;}}"
     + "\n*{box-sizing:border-box;}"
     + "body{margin:0;}"
     + ".rl-hero{position:relative;overflow:hidden;background:radial-gradient(120% 130% at 78% 8%, var(--rl-bg2) 0%, var(--rl-bg) 60%);padding:120px 32px;font-family:var(--rl-font-body);isolation:isolate;}"
@@ -335,23 +297,8 @@
     + ".rl-handle{display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--rl-cream);opacity:.55;}"
     + ".rl-handle strong{color:var(--rl-gold-soft);opacity:1;font-weight:600;}"
 
-    /* --- візуальна колонка: сфера + сітка вікон --- */
+    /* --- візуальна колонка: сітка вікон --- */
     + ".rl-visual{position:relative;justify-self:center;width:100%;display:flex;flex-direction:column;align-items:center;}"
-
-    /* WOW-ефект №3: парюча AI-сфера */
-    + ".rl-orb-wrap{position:relative;width:var(--rl-orb-d);height:var(--rl-orb-d);margin:0 auto 42px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s linear;}"
-    + ".rl-orb-breathe{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;animation:rlOrbBreathe 4.2s ease-in-out infinite;transform-origin:center;}"
-    + ".rl-orb-glow{position:absolute;inset:-32%;border-radius:50%;background:radial-gradient(circle, var(--rl-orb-a) 0%, var(--rl-orb-b) 42%, transparent 72%);filter:blur(var(--rl-orb-blur));opacity:.5;pointer-events:none;}"
-    + ".rl-orb{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;animation:rlOrbRotate 22s linear infinite;background:radial-gradient(circle at 30% 26%, rgba(255,255,255,.4), transparent 42%),radial-gradient(circle at 70% 74%, var(--rl-orb-b), transparent 58%),radial-gradient(circle at 28% 76%, var(--rl-orb-a), transparent 58%), var(--rl-orb-bg);box-shadow:inset 0 0 26px rgba(255,255,255,.14), 0 0 0 1px rgba(255,255,255,.1), 0 20px 50px -14px rgba(0,0,0,.6);}"
-    + ".rl-orb-canvas{position:absolute;inset:0;width:100%;height:100%;}"
-    + ".rl-orb-lines{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .35s ease;}"
-    + ".rl-orb-lines circle,.rl-orb-lines path{fill:none;stroke:var(--rl-orb-b);stroke-width:.6;opacity:.85;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px var(--rl-orb-b));}"
-    + ".rl-orb-wrap.is-hover .rl-orb-lines{opacity:1;}"
-    + ".rl-orb-wave{position:absolute;inset:-12%;border-radius:50%;border:1.5px solid var(--rl-orb-b);opacity:0;pointer-events:none;}"
-    + ".rl-orb-wrap.is-wave .rl-orb-wave{animation:rlOrbWave .75s ease-out;}"
-    + "@keyframes rlOrbBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}"
-    + "@keyframes rlOrbRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}"
-    + "@keyframes rlOrbWave{0%{transform:scale(.55);opacity:.85;border-color:var(--rl-orb-b);}60%{border-color:var(--rl-orb-a);}100%{transform:scale(2.3);opacity:0;}}"
 
     /* сітка з 4 "вікон" контенту */
     + ".rl-windows{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:370px;max-width:100%;}"
@@ -366,6 +313,8 @@
     + ".rl-dot--r{background:#FF5F57;} .rl-dot--y{background:#FEBC2E;} .rl-dot--g{background:#28C840;}"
     + ".rl-window__label{margin-left:6px;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-size:9.5px;letter-spacing:.02em;color:var(--rl-cream);opacity:.5;}"
     + ".rl-window__body{position:relative;aspect-ratio:4/5;background:var(--rl-bg2);}"
+    + ".rl-window--video .rl-window__body{aspect-ratio:9/16;}"
+    + ".rl-window--photo .rl-window__body{aspect-ratio:4/5;}"
     + ".rl-window__body img,.rl-window__body video{width:100%;height:100%;object-fit:cover;display:block;}"
 
     + "@media(max-width:900px){.rl-windows{width:320px;gap:13px;}}"
@@ -381,7 +330,6 @@
     + "#rlHero.rl-js.rl-live .rl-window--2.rl-reveal{transform:translateY(12px) rotate(1deg);}"
     + "#rlHero.rl-js.rl-live .rl-window--3.rl-reveal{transform:translateY(-4px) rotate(1.3deg);}"
     + "#rlHero.rl-js.rl-live .rl-window--4.rl-reveal{transform:translateY(10px) rotate(-.9deg);}"
-    + ".rl-orb-wrap.rl-settled{transition:opacity .3s ease !important;}"
 
     /* --- нижній рядок контактів/соцмереж --- */
     + ".rl-social{position:relative;z-index:3;max-width:1200px;margin:64px auto 0;padding-top:38px;display:flex;flex-direction:column;align-items:center;gap:18px;}"
@@ -394,7 +342,7 @@
     + ".rl-social__link:focus-visible{outline:3px solid var(--rl-gold-soft);outline-offset:3px;}"
     + "@media(max-width:960px){.rl-social{margin-top:52px;}}"
 
-    + "@media(prefers-reduced-motion:reduce){.rl-orb-breathe,.rl-orb,.rl-spark{animation:none !important;}#rlHero.rl-js .rl-reveal{transition:opacity .3s ease !important;transform:none !important;filter:none !important;}}"
+    + "@media(prefers-reduced-motion:reduce){.rl-spark{animation:none !important;}#rlHero.rl-js .rl-reveal{transition:opacity .3s ease !important;transform:none !important;filter:none !important;}}"
     ;
 
   /* ==========================================================
@@ -481,7 +429,7 @@
   var windowsWrap = document.getElementById("rlWindows");
   CONFIG.windows.forEach(function (w, i) {
     var card = document.createElement("figure");
-    card.className = "rl-window rl-window--" + (i + 1) + " rl-reveal";
+    card.className = "rl-window rl-window--" + (i + 1) + " rl-window--" + w.type + " rl-reveal";
 
     var head = document.createElement("div");
     head.className = "rl-window__head";
@@ -726,6 +674,23 @@
     root.addEventListener("touchend", onTouchEnd, { passive: true });
     root.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
+    // на телефоні/планшеті немає курсора — тому скрол сторінки "здуває"
+    // частки, щоб поле не завмирало без взаємодії
+    if (!isFinePointer && !reduceMotion) {
+      var lastScrollY = window.scrollY || window.pageYOffset || 0;
+      window.addEventListener("scroll", function () {
+        var y = window.scrollY || window.pageYOffset || 0;
+        var dy = y - lastScrollY;
+        lastScrollY = y;
+        var impulse = Math.max(-2.6, Math.min(2.6, dy * 0.06));
+        if (Math.abs(impulse) < 0.02) return;
+        for (var i = 0; i < particles.length; i++) {
+          particles[i].vy += impulse * (0.5 + Math.random() * 0.6);
+          particles[i].vx += (Math.random() - 0.5) * Math.abs(impulse) * 0.5;
+        }
+      }, { passive: true });
+    }
+
     var connectDist = CONFIG.neural.connectDistance;
     var pointerRadius = CONFIG.neural.pointerRadius;
 
@@ -760,6 +725,9 @@
 
         p.vx *= 0.965;
         p.vy *= 0.965;
+        var sp = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        var maxSp = 3.2;
+        if (sp > maxSp) { p.vx = (p.vx / sp) * maxSp; p.vy = (p.vy / sp) * maxSp; }
         p.x += p.vx;
         p.y += p.vy;
 
@@ -837,143 +805,11 @@
     }
   }
 
-  /* ==========================================================
-     WOW-ЕФЕКТ №3 — ПАРЮЧА AI-СФЕРА (замінює мокап телефону)
-     Часточки всередині + подих (breathing) + повільне обертання.
-     Hover (десктоп) / дотик (мобільний) — світні лінії.
-     Клік / тап — хвиля світла. Легка реакція на скрол.
-     ========================================================== */
-  function startOrb() {
-    var wrap = document.getElementById("rlOrb");
-    if (!CONFIG.effects.orb || !wrap) return;
-    setTimeout(function () { wrap.classList.add("rl-settled"); }, 950);
-
-    var canvas = document.getElementById("rlOrbCanvas");
-    var waveEl = document.getElementById("rlOrbWave");
-    var ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var size = 0;
-    var dots = [];
-    var colorA = hexToRgb(CONFIG.orb.colorA);
-    var colorB = hexToRgb(CONFIG.orb.colorB);
-
-    function hexToRgb(hex) {
-      hex = hex.replace("#", "");
-      var n = parseInt(hex, 16);
-      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
-    }
-
-    function resize() {
-      var rect = wrap.getBoundingClientRect();
-      size = rect.width;
-      if (!ctx || !size) return;
-      canvas.width = size * dpr;
-      canvas.height = size * dpr;
-      canvas.style.width = size + "px";
-      canvas.style.height = size + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (!dots.length) initDots();
-    }
-
-    function initDots() {
-      var n = CONFIG.orb.particles || 16;
-      dots = [];
-      for (var i = 0; i < n; i++) {
-        var ang = Math.random() * Math.PI * 2;
-        var rad = Math.random() * (size * 0.36);
-        dots.push({
-          a: ang,
-          r: rad,
-          speed: (Math.random() - 0.5) * 0.004,
-          rr: 1 + Math.random() * 1.6,
-          drift: Math.random() * Math.PI * 2
-        });
-      }
-    }
-
-    function frame() {
-      if (!ctx || !size) { requestAnimationFrame(frame); return; }
-      var cx = size / 2, cy = size / 2;
-      ctx.clearRect(0, 0, size, size);
-      for (var i = 0; i < dots.length; i++) {
-        var d = dots[i];
-        d.a += d.speed;
-        d.drift += 0.01;
-        var rr = d.r + Math.sin(d.drift) * 4;
-        var x = cx + Math.cos(d.a) * rr;
-        var y = cy + Math.sin(d.a) * rr * 0.9;
-        var mix = (Math.sin(d.a) + 1) / 2;
-        var col = {
-          r: colorA.r + (colorB.r - colorA.r) * mix,
-          g: colorA.g + (colorB.g - colorA.g) * mix,
-          b: colorA.b + (colorB.b - colorA.b) * mix
-        };
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(" + (col.r | 0) + "," + (col.g | 0) + "," + (col.b | 0) + ",0.85)";
-        ctx.shadowColor = "rgba(" + (col.r | 0) + "," + (col.g | 0) + "," + (col.b | 0) + ",0.9)";
-        ctx.shadowBlur = 5;
-        ctx.arc(x, y, d.rr, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.shadowBlur = 0;
-      requestAnimationFrame(frame);
-    }
-
-    // hover (десктоп) — показуємо додаткові світні лінії
-    wrap.addEventListener("mouseenter", function () { wrap.classList.add("is-hover"); });
-    wrap.addEventListener("mouseleave", function () { wrap.classList.remove("is-hover"); });
-
-    // клік / тап — коротка хвиля світла
-    function triggerWave() {
-      wrap.classList.remove("is-wave");
-      void wrap.offsetWidth; // форсуємо reflow, щоб анімація перезапустилась
-      wrap.classList.add("is-wave");
-    }
-    wrap.addEventListener("click", triggerWave);
-
-    // дотик пальцем — імітуємо hover-лінії + одразу хвилю, як природний тап
-    wrap.addEventListener("touchstart", function () {
-      wrap.classList.add("is-hover");
-      triggerWave();
-    }, { passive: true });
-    wrap.addEventListener("touchend", function () {
-      setTimeout(function () { wrap.classList.remove("is-hover"); }, 350);
-    }, { passive: true });
-
-    // легка реакція на скрол — сфера трохи зміщується й тьмяніє,
-    // коли герой виїжджає за межі екрана
-    var scrollTicking = false;
-    function onScroll() {
-      if (scrollTicking || reduceMotion) return;
-      scrollTicking = true;
-      requestAnimationFrame(function () {
-        var rect = root.getBoundingClientRect();
-        var vh = window.innerHeight || 800;
-        var progress = 1 - Math.min(1, Math.max(0, rect.top / vh));
-        var shift = Math.min(24, progress * 24);
-        wrap.style.setProperty("--rl-orb-scroll-shift", shift + "px");
-        wrap.style.transform = "translateY(" + (-shift) + "px)";
-        scrollTicking = false;
-      });
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    var resizeTimer2;
-    window.addEventListener("resize", function () {
-      clearTimeout(resizeTimer2);
-      resizeTimer2 = setTimeout(resize, 150);
-    });
-
-    resize();
-    if (!reduceMotion) requestAnimationFrame(frame);
-  }
-
   // старт: спершу екран запуску AI (WOW-ефект №1), потім розкриття
-  // контенту, живе нейронне поле (WOW-ефект №2) і AI-сфера (WOW-ефект №3)
+  // контенту і живе нейронне поле (WOW-ефект №2)
   runBootSequence(function () {
     revealHero();
     startNeuralField();
-    startOrb();
   });
 })();
 </script>
