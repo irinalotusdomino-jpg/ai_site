@@ -165,33 +165,44 @@
        Якщо файли не завантажуються на живому сайті — 99% причина:
        назви/регістр не співпадають (GitHub Pages чутливий до регістру:
        Photo.PNG ≠ photo.png), або папку assets завантажили не цілком.
-       Просто тримай назви файлів такими, як тут прописано. */
+       Просто тримай назви файлів такими, як тут прописано.
+
+       Поле "link" — посилання на публікацію в Instagram. Якщо воно
+       заповнене, вікно стає клікабельним: клік/тап відкриває цю
+       публікацію в новій вкладці, і при наведенні зʼявляється підказка
+       "Дивитись в Instagram". Постав тут пряме посилання на конкретний
+       Reels-пост (Instagram → відкрити публікацію → Copy link).
+       Якщо лишити порожній рядок "" — вікно просто не буде клікабельним. */
     windows: [
       {
         type: "video",
         label: "reel.mp4",
         src: "assets/reel.mp4",
         poster: "assets/poster.png",
-        alt: "AI reel — приклад згенерованого відео для соцмереж"
+        alt: "AI reel — приклад згенерованого відео для соцмереж",
+        link: "https://www.instagram.com/reel/ЗАМІНИ_НА_ID_ПУБЛІКАЦІЇ/" /* ЗМІНИТИ на посилання конкретного Reels-поста */
       },
       {
         type: "photo",
         label: "photo.png",
         src: "assets/photo.png",
-        alt: "AI-візуал — рекламне фото, створене без зйомки"
+        alt: "AI-візуал — рекламне фото, створене без зйомки",
+        link: "" /* ЗМІНИТИ, якщо хочеш зробити фото клікабельним теж */
       },
       {
         type: "photo",
         label: "photo2.png",
         src: "assets/photo2.png",
-        alt: "AI-візуал — стильний рекламний кадр для бренду одягу"
+        alt: "AI-візуал — стильний рекламний кадр для бренду одягу",
+        link: "" /* ЗМІНИТИ, якщо хочеш зробити фото клікабельним теж */
       },
       {
         type: "video",
         label: "reel2.mp4",
         src: "assets/reel2.mp4",
         poster: "assets/poster2.png",
-        alt: "AI reel — другий приклад згенерованого відео"
+        alt: "AI reel — другий приклад згенерованого відео",
+        link: "https://www.instagram.com/reel/ЗАМІНИ_НА_ID_ПУБЛІКАЦІЇ/" /* ЗМІНИТИ на посилання конкретного Reels-поста */
       }
     ],
 
@@ -301,9 +312,14 @@
     + ".rl-visual{position:relative;justify-self:center;width:100%;display:flex;flex-direction:column;align-items:center;}"
 
     /* сітка з 4 "вікон" контенту */
-    + ".rl-windows{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:370px;max-width:100%;}"
+    + ".rl-windows{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:370px;max-width:100%;align-items:start;}"
     + ".rl-window{margin:0;position:relative;border-radius:14px;overflow:hidden;background:var(--rl-ink);box-shadow:0 20px 40px -18px rgba(0,0,0,.6), 0 0 0 1px rgba(246,238,224,.07);transition:transform .3s ease, box-shadow .3s ease;}"
     + ".rl-window:hover{transform:translateY(-4px) !important;box-shadow:0 26px 46px -16px rgba(0,0,0,.7), 0 0 0 1px rgba(246,238,224,.12);}"
+    + ".rl-window--linked{cursor:pointer;}"
+    + ".rl-window--linked:hover,.rl-window--linked:focus-visible{box-shadow:0 26px 46px -16px rgba(0,0,0,.75), 0 0 0 2px var(--rl-mango) !important;}"
+    + ".rl-window--linked:focus-visible{outline:none;}"
+    + ".rl-window__badge{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;font-family:var(--rl-font-body);font-size:11.5px;font-weight:600;color:var(--rl-cream) !important;background:linear-gradient(0deg, rgba(14,10,16,.92), rgba(14,10,16,0));opacity:0;transform:translateY(6px);transition:opacity .25s ease, transform .25s ease;pointer-events:none;}"
+    + ".rl-window--linked:hover .rl-window__badge,.rl-window--linked:focus-visible .rl-window__badge{opacity:1;transform:translateY(0);}"
     + ".rl-window--1{transform:translateY(-8px) rotate(-1.1deg);}"
     + ".rl-window--2{transform:translateY(12px) rotate(1deg);}"
     + ".rl-window--3{transform:translateY(-4px) rotate(1.3deg);}"
@@ -458,6 +474,26 @@
     }
 
     card.appendChild(body);
+
+    // клікабельне посилання на публікацію в Instagram (якщо задане в CONFIG)
+    if (w.link) {
+      card.classList.add("rl-window--linked");
+      card.setAttribute("role", "link");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", w.alt + " — відкрити публікацію в Instagram");
+
+      var badge = document.createElement("span");
+      badge.className = "rl-window__badge";
+      badge.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg> Дивитись в Instagram';
+      body.appendChild(badge);
+
+      function openLink() { window.open(w.link, "_blank", "noopener"); }
+      card.addEventListener("click", openLink);
+      card.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLink(); }
+      });
+    }
+
     windowsWrap.appendChild(card);
   });
 
